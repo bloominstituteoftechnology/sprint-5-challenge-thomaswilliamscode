@@ -5,6 +5,9 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
   const currentYear = new Date().getFullYear()
   footer.textContent = `© BLOOM INSTITUTE OF TECHNOLOGY ${currentYear}`
 
+  const endPointA = 'http://localhost:3003/api/learners';
+  const endPointB = 'http://localhost:3003/api/mentors';
+
   // 👆 WORK WORK ABOVE THIS LINE 👆
 }
 
