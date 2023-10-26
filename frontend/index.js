@@ -34,16 +34,60 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
     element.classList.add(string)
   }
 
-  // create toggle function for h4
-  function toggleClass (element) {
-    if (element.classList.contains('open') ) {
-      element.classList.add('closed')
-      element.classList.remove('open');
-    } else {
-      element.classList.add('open');
-			element.classList.remove('closed');
+
+
+
+  function toggleSelected (element, e, h4, cardDiv, name, selectedName, basicName) {
+    // check to see if something is selected
+    let selected = document.querySelector('.selected')
+    let open = document.querySelector('.open')
+    let message = `The selected learner is ${basicName}`
+    let basicMessage = 'No Learner Selected'
+    let info = document.querySelector('.info')
+
+    if (h4 === e.target) {
+      if (h4.classList.contains('closed')) {
+        if (!open) {
+          h4.classList.remove('closed');
+					h4.classList.add('open');
+        } else {
+          open.classList.remove('open')
+          open.classList.add('closed')
+          h4.classList.remove('closed');
+          h4.classList.add('open')
+        }
+        
+      } else {
+        h4.classList.remove('open')
+        h4.classList.add('closed')
+      }
     }
-  }
+
+    // if click on selected, then just unselect it & basic name
+    if (selected) {
+      if (selected === e.currentTarget) {
+        e.currentTarget.classList.remove('selected')
+        info.textContent = basicMessage
+        cardDiv.children[0].textContent = basicName
+      } else {
+        selected.children[0].textContent = basicName
+        selected.classList.remove('selected')
+        e.currentTarget.classList.add('selected')
+        info.textContent = message
+        name.textContent = selectedName
+      }
+    } else {
+      element.classList.add('selected');
+      info.textContent = message;
+      name.textContent = selectedName
+    }
+
+
+    // if click on unsolected and nothing else is selected then select it, and select name
+
+    // if click on unsolected and something else is selected already, unselect that, and basic text on all names, and then select what you clicked on and select text
+      
+    } 
 
 
   // create click event for each card.
@@ -72,7 +116,9 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
 			// output name h3
 			const name = create('h3');
 			append(name, cardDiv);
-			name.textContent = `${fullName}, ID ${id}`;
+      let basicName = `${fullName}`;
+			name.textContent = basicName;
+      let selectedName = `${fullName}, ID ${id}`;
 
 			// output email div
 			const emailDiv = create('div');
@@ -86,8 +132,11 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
 			h4.textContent = 'Mentors';
 
 			// click event for h4
-			h4.addEventListener('click', () => {
-				toggleClass(h4);
+			cardDiv.addEventListener('click', (e) => {
+				
+        if  (e.currentTarget === cardDiv) {
+          toggleSelected(cardDiv, e, h4, cardDiv, name, selectedName, basicName)
+        }
 			});
 
 			// put mentor function here
@@ -134,6 +183,8 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
       return getMentors()
     }) 
     .then(mentorsData => {
+      let info = document.querySelector('.info');
+      info.textContent = 'No Learner Selected';
       main(resValue.data, mentorsData)
     }) 
     .catch(err => {
