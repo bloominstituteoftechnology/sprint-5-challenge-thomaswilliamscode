@@ -42,7 +42,7 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
     let selected = document.querySelector('.selected')
     let open = document.querySelector('.open')
     let message = `The selected learner is ${basicName}`
-    let basicMessage = 'No Learner Selected'
+    let basicMessage = 'No learner is selected';
     let info = document.querySelector('.info')
 
     if (h4 === e.target) {
@@ -51,13 +51,13 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
           h4.classList.remove('closed');
 					h4.classList.add('open');
         } else {
-          open.classList.remove('open')
-          open.classList.add('closed')
           h4.classList.remove('closed');
           h4.classList.add('open')
+          
         }
         
       } else {
+        
         h4.classList.remove('open')
         h4.classList.add('closed')
       }
@@ -65,7 +65,7 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
 
     // if click on selected, then just unselect it & basic name
     if (selected) {
-      if (selected === e.currentTarget) {
+      if ( (selected === e.currentTarget) && (e.target != h4) ) {
         e.currentTarget.classList.remove('selected')
         info.textContent = basicMessage
         cardDiv.children[0].textContent = basicName
@@ -184,8 +184,8 @@ async function sprintChallenge5() { // Note the async keyword, in case you wish 
     }) 
     .then(mentorsData => {
       let info = document.querySelector('.info');
-      info.textContent = 'No Learner Selected';
       main(resValue.data, mentorsData)
+      info.textContent = 'No learner is selected';
     }) 
     .catch(err => {
       console.log(err)
